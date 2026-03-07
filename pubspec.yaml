@@ -1,0 +1,36 @@
+name: car_rental_app
+description: Flutter starter application for a GPS-enabled car rental platform.
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  dio: ^5.8.0+1
+  flutter_riverpod: ^2.6.1
+  go_router: ^14.8.1
+  intl: ^0.20.2
+  firebase_core: ^4.5.0
+  firebase_auth: ^6.2.0
+  firebase_database: ^12.1.4
+  firebase_messaging: ^16.1.2
+  flutter_map: ^8.2.1
+  flutter_local_notifications: ^19.4.0
+  geolocator: ^14.0.2
+  image_picker: ^1.1.2
+  latlong2: ^0.9.1
+  mapbox_maps_flutter: ^2.0.0
+  shared_preferences: ^2.5.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
