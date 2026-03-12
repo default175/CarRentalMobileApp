@@ -1,0 +1,4 @@
+enum AppRole {
+  user,
+  admin,
+}
