@@ -77,11 +77,13 @@ class AppRuntimeConfig {
     final warnings = <String>[];
 
     if (!isFirebaseConfigured) {
-      warnings.add('Firebase is not fully configured. Demo auth and demo GPS are active.');
+      warnings.add(
+          'Firebase is not fully configured. Demo auth and demo GPS are active.');
     }
 
     if (!isMapboxConfigured) {
-      warnings.add('Mapbox token is missing. Tracking falls back to the text summary view.');
+      warnings.add(
+          'Mapbox token is missing. Tracking falls back to the text summary view.');
     }
 
     return warnings;

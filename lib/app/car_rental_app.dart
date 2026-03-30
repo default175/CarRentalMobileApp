@@ -19,9 +19,17 @@ class CarRentalApp extends ConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
       routerConfig: router,
-      builder: (context, child) => LocationAccessGate(
-        child: child ?? const SizedBox.shrink(),
-      ),
+      builder: (context, child) {
+        final media = MediaQuery.of(context);
+        final scale =
+            media.textScaler.scale(1).clamp(0.9, 1.15).toDouble();
+        return MediaQuery(
+          data: media.copyWith(textScaler: TextScaler.linear(scale)),
+          child: LocationAccessGate(
+            child: child ?? const SizedBox.shrink(),
+          ),
+        );
+      },
       debugShowCheckedModeBanner: false,
     );
   }
