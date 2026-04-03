@@ -28,7 +28,8 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
         value: cars,
         data: (items) {
           _selectedCarId ??= items.first.id;
-          final selectedCar = items.firstWhere((car) => car.id == _selectedCarId);
+          final selectedCar =
+              items.firstWhere((car) => car.id == _selectedCarId);
           final tracking = ref.watch(trackingStreamProvider(selectedCar.id));
 
           return Column(
@@ -94,7 +95,8 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
                             Expanded(
                               child: InfoCard(
                                 title: 'Speed',
-                                value: '${snapshot.speedKph.toStringAsFixed(0)} km/h',
+                                value:
+                                    '${snapshot.speedKph.toStringAsFixed(0)} km/h',
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -111,7 +113,8 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
                             Expanded(
                               child: InfoCard(
                                 title: 'Distance',
-                                value: '${snapshot.distanceKm.toStringAsFixed(1)} km',
+                                value:
+                                    '${snapshot.distanceKm.toStringAsFixed(1)} km',
                               ),
                             ),
                           ],
