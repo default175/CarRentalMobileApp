@@ -30,9 +30,8 @@ class FakeAuthRepository implements AuthRepository {
     }
 
     final normalized = email.trim().toLowerCase();
-    _currentUser =
-        _store.findUserByEmail(normalized) ??
-            _store.findUserByEmail(AppConstants.demoUserEmail);
+    _currentUser = _store.findUserByEmail(normalized) ??
+        _store.findUserByEmail(AppConstants.demoUserEmail);
     await _storage.saveSessionUser(_currentUser);
 
     return _currentUser!;

@@ -19,6 +19,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   final _licenseController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _submitting = false;
+  bool _showPassword = false;
   String? _errorText;
 
   @override
@@ -45,6 +46,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
             password: _passwordController.text,
             licenseNumber: _licenseController.text,
           );
+      ref.invalidate(adminOverviewProvider);
+      ref.invalidate(bookingsControllerProvider);
       if (mounted) {
         context.go('/app');
       }
@@ -77,70 +80,102 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 560),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 560),
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(24, 52, 24, 24),
+            children: [
+              Row(
                 children: [
-                  Text('Create account', style: theme.textTheme.displaySmall),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Register once to book cars, save your profile and keep access to live map features on web and Android.',
-                    style: theme.textTheme.bodyLarge,
-                  ),
-                  const SizedBox(height: 24),
-                  TextField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(labelText: 'Full name'),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(labelText: 'Email'),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _phoneController,
-                    decoration: const InputDecoration(labelText: 'Phone'),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _licenseController,
-                    decoration: const InputDecoration(labelText: 'Driver license'),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(labelText: 'Password'),
-                  ),
-                  if (_errorText != null) ...[
-                    const SizedBox(height: 12),
-                    Text(
-                      _errorText!,
-                      style: TextStyle(color: theme.colorScheme.error),
-                    ),
-                  ],
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton(
-                      onPressed: _submitting ? null : _submit,
-                      child: Text(_submitting ? 'Creating account...' : 'Register'),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  TextButton(
+                  IconButton.outlined(
                     onPressed: () => context.go('/login'),
-                    child: const Text('Already have an account? Sign in'),
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Create account',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 28),
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Full name',
+                  prefixIcon: Icon(Icons.person_outline),
+                ),
+              ),
+              const SizedBox(height: 14),
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  prefixIcon: Icon(Icons.mail_outline),
+                ),
+              ),
+              const SizedBox(height: 14),
+              TextField(
+                controller: _phoneController,
+                decoration: const InputDecoration(
+                  labelText: 'Phone',
+                  prefixIcon: Icon(Icons.phone_outlined),
+                ),
+              ),
+              const SizedBox(height: 14),
+              TextField(
+                controller: _licenseController,
+                decoration: const InputDecoration(
+                  labelText: 'Driver license',
+                  prefixIcon: Icon(Icons.badge_outlined),
+                ),
+              ),
+              const SizedBox(height: 14),
+              TextField(
+                controller: _passwordController,
+                obscureText: !_showPassword,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  prefixIcon: const Icon(Icons.lock_outline),
+                  suffixIcon: IconButton(
+                    tooltip: _showPassword ? 'Hide password' : 'Show password',
+                    onPressed: () {
+                      setState(() {
+                        _showPassword = !_showPassword;
+                      });
+                    },
+                    icon: Icon(
+                      _showPassword
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                    ),
+                  ),
+                ),
+              ),
+              if (_errorText != null) ...[
+                const SizedBox(height: 12),
+                Text(
+                  _errorText!,
+                  style: TextStyle(color: theme.colorScheme.error),
+                ),
+              ],
+              const SizedBox(height: 24),
+              FilledButton.icon(
+                onPressed: _submitting ? null : _submit,
+                icon: const Icon(Icons.person_add_alt),
+                label: Text(_submitting ? 'Creating account...' : 'Sign up'),
+              ),
+              const SizedBox(height: 12),
+              Center(
+                child: TextButton(
+                  onPressed: () => context.go('/login'),
+                  child: const Text('Already have an account? Sign in'),
+                ),
+              ),
+            ],
           ),
         ),
       ),
