@@ -29,8 +29,8 @@ class ApiBookingsRepository implements BookingsRepository {
         'car_name': car.title,
         'start_time': startTime.toIso8601String(),
         'end_time': endTime.toIso8601String(),
-        'total_price':
-            car.pricePerHour * endTime.difference(startTime).inHours.clamp(1, 24),
+        'total_price': car.pricePerHour *
+            endTime.difference(startTime).inHours.clamp(1, 24),
       },
     );
   }

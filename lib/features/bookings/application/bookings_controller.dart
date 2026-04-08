@@ -49,4 +49,15 @@ class BookingsController extends StateNotifier<AsyncValue<List<Booking>>> {
 
     await load();
   }
+
+  Future<void> updateStatus({
+    required String bookingId,
+    required BookingStatus status,
+  }) async {
+    await _repository.updateBookingStatus(
+      bookingId: bookingId,
+      status: status,
+    );
+    await load();
+  }
 }

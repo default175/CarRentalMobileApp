@@ -19,7 +19,8 @@ class BookingsPage extends ConsumerWidget {
       child: AsyncValueWidget(
         value: bookings,
         data: (items) {
-          final upcoming = items.where((booking) => booking.isUpcoming).toList();
+          final upcoming =
+              items.where((booking) => booking.isUpcoming).toList();
           final active = items.where((booking) => booking.isActive).toList();
           final history = items.where((booking) => booking.isHistory).toList();
 
@@ -133,7 +134,10 @@ class _BookingCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
+        color: Theme.of(context)
+            .colorScheme
+            .surfaceContainerHighest
+            .withValues(alpha: 0.35),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -141,7 +145,8 @@ class _BookingCard extends StatelessWidget {
         children: [
           Text(booking.carName, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),
-          Text('${formatter.format(booking.startTime)} - ${formatter.format(booking.endTime)}'),
+          Text(
+              '${formatter.format(booking.startTime)} - ${formatter.format(booking.endTime)}'),
           const SizedBox(height: 8),
           Text('Status: ${_statusLabel()}'),
           const SizedBox(height: 8),
