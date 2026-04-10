@@ -55,6 +55,12 @@ class ApiAdminRepository implements AdminRepository {
         'color': car.color,
         'description': car.description,
         'features': car.features,
+        'fuel_type': car.fuelType,
+        'gas_level': car.gasLevel,
+        'engine_volume': car.engineVolume,
+        'mileage_km': car.mileageKm,
+        'drive': car.drive,
+        'registered': car.registered,
         'image_url': car.imageUrl,
         'has_gps_signal': car.hasGpsSignal,
         'location': {
@@ -138,6 +144,12 @@ class ApiAdminRepository implements AdminRepository {
       features: (raw['features'] as List<dynamic>? ?? const [])
           .map((item) => item.toString())
           .toList(growable: false),
+      fuelType: raw['fuel_type'] as String? ?? 'Petrol',
+      gasLevel: (raw['gas_level'] as num?)?.toInt(),
+      engineVolume: (raw['engine_volume'] as num?)?.toDouble(),
+      mileageKm: (raw['mileage_km'] as num?)?.toInt() ?? 0,
+      drive: raw['drive'] as String? ?? 'front',
+      registered: raw['registered'] as bool? ?? true,
       hasGpsSignal: raw['has_gps_signal'] as bool? ?? true,
     );
   }
