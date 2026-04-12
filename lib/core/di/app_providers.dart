@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../location/location_access_controller.dart';
 import '../location/location_access_state.dart';
+import '../network/api_connection_controller.dart';
+import '../network/api_connection_settings.dart';
 import '../../features/admin/domain/admin_repository.dart';
 import '../../features/admin/infrastructure/repositories/api_admin_repository.dart';
 import '../../features/admin/infrastructure/repositories/fake_admin_repository.dart';
@@ -33,17 +35,21 @@ import '../network/api_client.dart';
 import '../config/app_config.dart';
 import '../routing/app_router.dart';
 import '../services/local_app_storage.dart';
+import '../services/push_notifications_service.dart';
 import '../theme/theme_mode_controller.dart';
 import '../../shared/demo/demo_data_store.dart';
 import '../../shared/models/app_notification.dart';
 import '../../shared/models/booking.dart';
 import '../../shared/models/car.dart';
+import '../../shared/models/car_review.dart';
+import '../../shared/models/payment_method_option.dart';
 import '../../shared/models/tracking_snapshot.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final store = ref.watch(demoDataStoreProvider);
   final storage = ref.watch(localAppStorageProvider);
-  if (AppConfig.runtime.shouldUseApiRepositories) {
+  final apiSettings = ref.watch(apiConnectionSettingsProvider);
+  if (apiSettings.shouldUseBackend) {
     return ApiAuthRepository(ref.watch(apiClientProvider), storage);
   }
 
@@ -66,7 +72,14 @@ final demoDataStoreProvider = Provider<DemoDataStore>((ref) {
 });
 
 final apiClientProvider = Provider<ApiClient>((ref) {
-  return ApiClient();
+  final settings = ref.watch(apiConnectionSettingsProvider);
+  return ApiClient(baseUrl: settings.baseUrl);
+});
+
+final apiConnectionSettingsProvider =
+    StateNotifierProvider<ApiConnectionController, ApiConnectionSettings>(
+        (ref) {
+  return ApiConnectionController(ref.watch(localAppStorageProvider));
 });
 
 final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) {
@@ -75,7 +88,7 @@ final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) {
 });
 
 final carsRepositoryProvider = Provider<CarsRepository>((ref) {
-  if (AppConfig.runtime.shouldUseApiRepositories) {
+  if (ref.watch(apiConnectionSettingsProvider).shouldUseBackend) {
     return ApiCarsRepository(ref.watch(apiClientProvider));
   }
 
@@ -87,7 +100,7 @@ final carsProvider = FutureProvider<List<Car>>((ref) {
 });
 
 final bookingsRepositoryProvider = Provider<BookingsRepository>((ref) {
-  if (AppConfig.runtime.shouldUseApiRepositories) {
+  if (ref.watch(apiConnectionSettingsProvider).shouldUseBackend) {
     return ApiBookingsRepository(ref.watch(apiClientProvider));
   }
 
@@ -100,7 +113,7 @@ final bookingsControllerProvider =
 });
 
 final trackingRepositoryProvider = Provider<TrackingRepository>((ref) {
-  if (AppConfig.runtime.shouldUseApiRepositories) {
+  if (ref.watch(apiConnectionSettingsProvider).shouldUseBackend) {
     return ApiTrackingRepository(ref.watch(apiClientProvider));
   }
 
@@ -116,8 +129,9 @@ final trackingStreamProvider =
   return ref.watch(trackingRepositoryProvider).watchCar(carId);
 });
 
-final notificationsRepositoryProvider = Provider<NotificationsRepository>((ref) {
-  if (AppConfig.runtime.shouldUseApiRepositories) {
+final notificationsRepositoryProvider =
+    Provider<NotificationsRepository>((ref) {
+  if (ref.watch(apiConnectionSettingsProvider).shouldUseBackend) {
     return ApiNotificationsRepository(ref.watch(apiClientProvider));
   }
 
@@ -126,21 +140,43 @@ final notificationsRepositoryProvider = Provider<NotificationsRepository>((ref) 
 
 final notificationsRefreshTickProvider = StreamProvider<int>((ref) async* {
   yield 0;
-  await for (final tick in Stream<int>.periodic(const Duration(seconds: 30), (v) => v + 1)) {
+  await for (final tick
+      in Stream<int>.periodic(const Duration(seconds: 30), (v) => v + 1)) {
     yield tick;
   }
 });
 
 final notificationsProvider = FutureProvider<List<AppNotification>>((ref) {
   ref.watch(notificationsRefreshTickProvider);
-  final hiddenIds = ref.watch(hiddenNotificationIdsProvider);
+  final expiresAt = DateTime.now().subtract(const Duration(days: 30));
   return ref.watch(notificationsRepositoryProvider).fetchNotifications().then(
-        (items) => items.where((item) => !hiddenIds.contains(item.id)).toList(),
-      );
+    (items) {
+      final visible = items
+          .where((item) => item.createdAt.isAfter(expiresAt))
+          .toList(growable: false);
+      final viewed = ref.read(viewedNotificationIdsProvider);
+      final pushEnabled = ref.watch(pushNotificationsEnabledProvider);
+      PushNotificationsService.instance
+          ?.setLocalNotificationsEnabled(pushEnabled);
+      if (pushEnabled) {
+        for (final item in visible) {
+          if (!viewed.contains(item.id)) {
+            PushNotificationsService.instance?.showLocalNotification(
+              notificationId: item.id,
+              title: item.title,
+              body: item.message,
+            );
+          }
+        }
+      }
+      return visible;
+    },
+  );
 });
 
-final viewedNotificationIdsProvider =
-    StateProvider<Set<String>>((ref) => <String>{});
+final viewedNotificationIdsProvider = StateProvider<Set<String>>((ref) {
+  return ref.watch(localAppStorageProvider).viewedNotificationIds;
+});
 
 final hiddenNotificationIdsProvider =
     StateProvider<Set<String>>((ref) => <String>{});
@@ -156,7 +192,7 @@ final unreadNotificationsCountProvider = Provider<int>((ref) {
 });
 
 final adminRepositoryProvider = Provider<AdminRepository>((ref) {
-  if (AppConfig.runtime.shouldUseApiRepositories) {
+  if (ref.watch(apiConnectionSettingsProvider).shouldUseBackend) {
     return ApiAdminRepository(ref.watch(apiClientProvider));
   }
 
@@ -165,7 +201,7 @@ final adminRepositoryProvider = Provider<AdminRepository>((ref) {
 
 final themeModeProvider =
     StateNotifierProvider<ThemeModeController, ThemeMode>((ref) {
-  return ThemeModeController();
+  return ThemeModeController(ref.watch(localAppStorageProvider));
 });
 
 final locationAccessControllerProvider =
@@ -174,6 +210,37 @@ final locationAccessControllerProvider =
 });
 
 final selectedCarProvider = StateProvider<String?>((ref) => null);
+
+final favoriteCarIdsProvider = StateProvider<Set<String>>((ref) {
+  return ref.watch(localAppStorageProvider).favoriteCarIds;
+});
+
+final pushNotificationsEnabledProvider = StateProvider<bool>((ref) {
+  return ref.watch(localAppStorageProvider).pushNotificationsEnabled;
+});
+
+final paymentMethodsProvider = StateProvider<List<PaymentMethodOption>>((ref) {
+  return ref.watch(localAppStorageProvider).paymentMethods;
+});
+
+final selectedPaymentMethodProvider = StateProvider<String>((ref) {
+  return ref.watch(localAppStorageProvider).selectedPaymentMethodId;
+});
+
+final carReviewsProvider = StateProvider<List<CarReview>>((ref) {
+  return [
+    CarReview(
+      id: 'review-1',
+      userId: 'user-1',
+      userName: 'Aruzhan S.',
+      carId: 'car-1',
+      carName: 'Tesla Model 3',
+      rating: 5,
+      comment: 'Clean car, fast pickup and accurate range estimate.',
+      createdAt: DateTime.now().subtract(const Duration(days: 2)),
+    ),
+  ];
+});
 
 final carByIdProvider = FutureProvider.family<Car?, String>((ref, carId) {
   return ref.watch(carsRepositoryProvider).getCarById(carId);
