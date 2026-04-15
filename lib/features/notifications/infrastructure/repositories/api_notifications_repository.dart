@@ -9,25 +9,22 @@ class ApiNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<List<AppNotification>> fetchNotifications() async {
-    final response =
-        await _client.dio.get<List<dynamic>>('/api/notifications');
+    final response = await _client.dio.get<List<dynamic>>('/api/notifications');
     final items = response.data ?? const [];
 
-    return items
-        .map(
-          (item) {
-            final raw = Map<String, dynamic>.from(item as Map);
+    return items.map(
+      (item) {
+        final raw = Map<String, dynamic>.from(item as Map);
 
-            return AppNotification(
-            id: raw['id'] as String,
-            title: raw['title'] as String,
-            message: raw['message'] as String,
-            type: _typeFromString(raw['type'] as String),
-            createdAt: DateTime.parse(raw['created_at'] as String),
-            );
-          },
-        )
-        .toList(growable: false);
+        return AppNotification(
+          id: raw['id'] as String,
+          title: raw['title'] as String,
+          message: raw['message'] as String,
+          type: _typeFromString(raw['type'] as String),
+          createdAt: DateTime.parse(raw['created_at'] as String),
+        );
+      },
+    ).toList(growable: false);
   }
 
   @override

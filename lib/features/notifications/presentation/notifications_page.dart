@@ -33,20 +33,20 @@ class NotificationsListView extends ConsumerWidget {
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final item = items[index];
+          final isRead =
+              ref.watch(viewedNotificationIdsProvider).contains(item.id);
           return NotificationCard(
             notification: item,
-            onTap: () {
-              ref.read(viewedNotificationIdsProvider.notifier).state = {
+            isRead: isRead,
+            onTap: () async {
+              final next = {
                 ...ref.read(viewedNotificationIdsProvider),
                 item.id,
               };
-              ref.read(hiddenNotificationIdsProvider.notifier).state = {
-                ...ref.read(hiddenNotificationIdsProvider),
-                item.id,
-              };
-              final repository = ref.read(notificationsRepositoryProvider);
-              repository.dismissNotification(item.id);
-              ref.invalidate(notificationsProvider);
+              ref.read(viewedNotificationIdsProvider.notifier).state = next;
+              await ref
+                  .read(localAppStorageProvider)
+                  .saveViewedNotificationIds(next);
             },
           );
         },
@@ -58,11 +58,13 @@ class NotificationsListView extends ConsumerWidget {
 class NotificationCard extends StatelessWidget {
   const NotificationCard({
     required this.notification,
+    required this.isRead,
     required this.onTap,
     super.key,
   });
 
   final AppNotification notification;
+  final bool isRead;
   final VoidCallback onTap;
 
   IconData _icon() {
@@ -95,6 +97,8 @@ class NotificationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final formatter = DateFormat('dd.MM.yyyy HH:mm');
     final color = _color(context);
+    final backgroundAlpha = isRead ? 0.06 : 0.2;
+    final foregroundAlpha = isRead ? 0.58 : 1.0;
 
     return InkWell(
       onTap: onTap,
@@ -102,7 +106,10 @@ class NotificationCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
-          color: color.withValues(alpha: 0.12),
+          color: color.withValues(alpha: backgroundAlpha),
+          border: Border.all(
+            color: color.withValues(alpha: isRead ? 0.08 : 0.35),
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(18),
@@ -111,7 +118,7 @@ class NotificationCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 backgroundColor: color.withValues(alpha: 0.18),
-                foregroundColor: color,
+                foregroundColor: color.withValues(alpha: foregroundAlpha),
                 child: Icon(_icon()),
               ),
               const SizedBox(width: 14),
@@ -121,10 +128,25 @@ class NotificationCard extends StatelessWidget {
                   children: [
                     Text(
                       notification.title,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: foregroundAlpha),
+                            fontWeight:
+                                isRead ? FontWeight.w600 : FontWeight.w900,
+                          ),
                     ),
                     const SizedBox(height: 6),
-                    Text(notification.message),
+                    Text(
+                      notification.message,
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: isRead ? 0.58 : 0.86),
+                      ),
+                    ),
                     const SizedBox(height: 10),
                     Text(
                       formatter.format(notification.createdAt),
