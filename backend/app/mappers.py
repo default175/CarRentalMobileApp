@@ -13,38 +13,44 @@ from .schemas import (
 def map_car(document: dict) -> CarSchema:
     return CarSchema(
         id=document["_id"],
-        brand=document["brand"],
-        model=document["model"],
-        year=document["year"],
-        type=document["type"],
+        brand=document.get("brand", "Unknown"),
+        model=document.get("model", "Car"),
+        year=document.get("year", 2024),
+        type=document.get("type", "Sedan"),
         category=document.get("category"),
-        price_per_hour=document["price_per_hour"],
-        status=document["status"],
-        battery_level=document["battery_level"],
-        range_km=document["range_km"],
+        price_per_hour=document.get("price_per_hour", 0),
+        status=document.get("status", "available"),
+        battery_level=document.get("battery_level", 0),
+        range_km=document.get("range_km", 0),
         seats=document.get("seats"),
         transmission=document.get("transmission"),
         color=document.get("color"),
         description=document.get("description"),
         features=document.get("features", []),
+        fuel_type=document.get("fuel_type", "Petrol"),
+        gas_level=document.get("gas_level"),
+        engine_volume=document.get("engine_volume"),
+        mileage_km=document.get("mileage_km", 0),
+        drive=document.get("drive", "front"),
+        registered=document.get("registered", True),
         image_url=document.get("image_url"),
         has_gps_signal=document.get("has_gps_signal", True),
-        location=document["location"],
+        location=document.get("location", {"lat": 43.2389, "lng": 76.8897}),
     )
 
 
 def map_booking(document: dict) -> BookingSchema:
     return BookingSchema(
         id=document["_id"],
-        user_id=document["user_id"],
+        user_id=document.get("user_id", "user-unknown"),
         user_name=document.get("user_name"),
-        car_id=document["car_id"],
-        car_name=document["car_name"],
+        car_id=document.get("car_id", "car-unknown"),
+        car_name=document.get("car_name", "Unknown car"),
         start_time=document["start_time"],
         end_time=document["end_time"],
-        status=document["status"],
-        total_price=document["total_price"],
-        distance_km=document["distance_km"],
+        status=document.get("status", "created"),
+        total_price=document.get("total_price", 0),
+        distance_km=document.get("distance_km", 0),
         route_summary=document.get("route_summary"),
     )
 
@@ -62,14 +68,14 @@ def map_notification(document: dict) -> NotificationSchema:
 def map_user(document: dict) -> UserSchema:
     return UserSchema(
         id=document["_id"],
-        name=document["name"],
-        email=document["email"],
-        phone=document["phone"],
-        role=document["role"],
+        name=document.get("name", "Unknown user"),
+        email=document.get("email", ""),
+        phone=document.get("phone", ""),
+        role=document.get("role", "user"),
         license_number=document.get("license_number"),
         photo_url=document.get("photo_url"),
         created_at=document.get("created_at"),
-        blocked=document["blocked"],
+        blocked=document.get("blocked", False),
     )
 
 
