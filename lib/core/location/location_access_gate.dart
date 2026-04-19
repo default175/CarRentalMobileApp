@@ -43,7 +43,7 @@ class LocationAccessGate extends ConsumerWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'On the first launch the app requests location access to show your position on the map and use it as a fallback when a car GPS signal is unavailable.',
+                    'Location access is required to use the app, show your city in the menu and place rented cars on the GPS map near you.',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   if (state.errorMessage != null) ...[
@@ -59,8 +59,9 @@ class LocationAccessGate extends ConsumerWidget {
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton.icon(
-                      onPressed:
-                          state.requestInProgress ? null : controller.requestAccess,
+                      onPressed: state.requestInProgress
+                          ? null
+                          : controller.requestAccess,
                       icon: const Icon(Icons.my_location),
                       label: Text(
                         state.requestInProgress
@@ -70,14 +71,9 @@ class LocationAccessGate extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: state.requestInProgress
-                          ? null
-                          : controller.continueWithoutLocation,
-                      child: const Text('Continue in limited mode'),
-                    ),
+                  Text(
+                    'If permission is denied, enable location access in Android settings and try again.',
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),

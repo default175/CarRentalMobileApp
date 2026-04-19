@@ -12,8 +12,13 @@ class PushNotificationsService {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
   final Set<String> _shownLocalNotificationIds = <String>{};
+  bool _localNotificationsEnabled = true;
 
   static PushNotificationsService? get instance => _instance;
+
+  void setLocalNotificationsEnabled(bool enabled) {
+    _localNotificationsEnabled = enabled;
+  }
 
   Future<String?> initialize() async {
     _instance = this;
@@ -51,7 +56,9 @@ class PushNotificationsService {
     required String title,
     required String body,
   }) async {
-    if (kIsWeb || _shownLocalNotificationIds.contains(notificationId)) {
+    if (kIsWeb ||
+        !_localNotificationsEnabled ||
+        _shownLocalNotificationIds.contains(notificationId)) {
       return;
     }
 

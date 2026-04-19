@@ -19,13 +19,13 @@ class LocationAccessState {
   final GeoPoint? currentLocation;
   final String? errorMessage;
 
-  bool get shouldShowOnboarding => !onboardingSeen;
-
   bool get hasPermission =>
       permission == LocationPermission.always ||
       permission == LocationPermission.whileInUse;
 
   bool get canUseLocation => hasPermission && currentLocation != null;
+
+  bool get shouldShowOnboarding => !canUseLocation;
 
   LocationAccessState copyWith({
     bool? onboardingSeen,

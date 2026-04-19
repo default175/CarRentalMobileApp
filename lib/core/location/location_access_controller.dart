@@ -102,7 +102,8 @@ class LocationAccessController extends StateNotifier<LocationAccessState> {
         ),
       );
       state = state.copyWith(
-        currentLocation: GeoPoint(lat: position.latitude, lng: position.longitude),
+        currentLocation:
+            GeoPoint(lat: position.latitude, lng: position.longitude),
         clearError: true,
       );
     } catch (error) {
