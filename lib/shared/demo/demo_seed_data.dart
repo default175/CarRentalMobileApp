@@ -48,7 +48,7 @@ class DemoSeedData {
   }
 
   static List<Car> cars() {
-    return const [
+    return [
       Car(
         id: 'car-1',
         brand: 'Tesla',
@@ -66,7 +66,13 @@ class DemoSeedData {
         transmission: 'Automatic',
         color: 'Pearl White',
         description: 'Premium electric sedan for city and business rentals.',
-        features: ['Autopilot', 'Panoramic roof', 'Fast charging', 'Premium audio'],
+        features: [
+          'Autopilot',
+          'Panoramic roof',
+          'Fast charging',
+          'Premium audio'
+        ],
+        fuelType: 'Electric',
       ),
       Car(
         id: 'car-2',
@@ -122,7 +128,8 @@ class DemoSeedData {
         seats: 5,
         transmission: 'Automatic',
         color: 'Blue',
-        description: 'Comfort sedan currently unavailable due to scheduled service.',
+        description:
+            'Comfort sedan currently unavailable due to scheduled service.',
         features: ['Heated seats', 'CarPlay', 'Lane assist'],
         hasGpsSignal: false,
       ),
@@ -145,7 +152,12 @@ class DemoSeedData {
         color: 'Gray',
         description:
             'Imported from the provided dataset: Nissan X-Trail crossover, 2013, petrol, full drive.',
-        features: ['Full drive', 'Petrol engine', 'High clearance', 'Family trips'],
+        features: [
+          'Full drive',
+          'Petrol engine',
+          'High clearance',
+          'Family trips'
+        ],
       ),
       Car(
         id: 'car-6',
@@ -166,7 +178,12 @@ class DemoSeedData {
         color: 'Black',
         description:
             'Imported from the provided dataset: Mercedes-Benz E-Class sedan, 2011, gas, rear drive.',
-        features: ['Business class', 'Rear drive', 'Leather interior', 'Long-route comfort'],
+        features: [
+          'Business class',
+          'Rear drive',
+          'Leather interior',
+          'Long-route comfort'
+        ],
       ),
       Car(
         id: 'car-7',
@@ -187,7 +204,12 @@ class DemoSeedData {
         color: 'Graphite',
         description:
             'Imported from the provided dataset: Ford Kuga crossover, 2010, 2.5 gas, all-wheel drive.',
-        features: ['All-wheel drive', 'Raised suspension', 'Family comfort', 'Weekend trips'],
+        features: [
+          'All-wheel drive',
+          'Raised suspension',
+          'Family comfort',
+          'Weekend trips'
+        ],
       ),
       Car(
         id: 'car-8',
@@ -208,10 +230,308 @@ class DemoSeedData {
         color: 'White',
         description:
             'Imported from the provided dataset: Renault Megane wagon, 2011, diesel, front drive.',
-        features: ['Diesel economy', 'Large trunk', 'Road trip setup', 'Comfort ride'],
+        features: [
+          'Diesel economy',
+          'Large trunk',
+          'Road trip setup',
+          'Comfort ride'
+        ],
         hasGpsSignal: false,
       ),
+      Car(
+        id: 'car-9',
+        brand: 'BMW',
+        model: 'X5',
+        year: 2022,
+        type: 'SUV',
+        category: 'Business',
+        pricePerHour: 24000,
+        status: CarStatus.available,
+        location: GeoPoint(lat: 43.2365, lng: 76.9453),
+        imageUrl:
+            'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
+        batteryLevel: 82,
+        rangeKm: 590,
+        seats: 5,
+        transmission: 'Automatic',
+        color: 'Dark Blue',
+        description: 'Executive SUV with premium cabin and active safety.',
+        features: ['AWD', 'Premium audio', 'Panoramic roof', 'Adaptive cruise'],
+      ),
+      Car(
+        id: 'car-10',
+        brand: 'Audi',
+        model: 'A6',
+        year: 2021,
+        type: 'Sedan',
+        category: 'Business',
+        pricePerHour: 18500,
+        status: CarStatus.available,
+        location: GeoPoint(lat: 43.2451, lng: 76.9004),
+        imageUrl:
+            'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1200&q=80',
+        batteryLevel: 76,
+        rangeKm: 610,
+        seats: 5,
+        transmission: 'Automatic',
+        color: 'White',
+        description:
+            'Business sedan for meetings, airport transfers and daily routes.',
+        features: [
+          'Matrix lights',
+          'Leather interior',
+          'Quiet cabin',
+          'Navigation'
+        ],
+      ),
+      Car(
+        id: 'car-11',
+        brand: 'Volkswagen',
+        model: 'ID.4',
+        year: 2024,
+        type: 'Crossover',
+        category: 'Electric',
+        pricePerHour: 12500,
+        status: CarStatus.available,
+        location: GeoPoint(lat: 43.2298, lng: 76.8921),
+        imageUrl:
+            'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=1200&q=80',
+        batteryLevel: 91,
+        rangeKm: 520,
+        seats: 5,
+        transmission: 'Automatic',
+        color: 'Silver',
+        description:
+            'Electric crossover with practical cargo space and fast charging.',
+        features: [
+          'Fast charging',
+          'Electric drive',
+          'Large trunk',
+          'Lane assist'
+        ],
+        fuelType: 'Electric',
+      ),
+      Car(
+        id: 'car-12',
+        brand: 'Chevrolet',
+        model: 'Camaro',
+        year: 2020,
+        type: 'Sport',
+        category: 'Comfort',
+        pricePerHour: 22000,
+        status: CarStatus.booked,
+        location: GeoPoint(lat: 43.2186, lng: 76.9275),
+        imageUrl:
+            'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=1200&q=80',
+        batteryLevel: 70,
+        rangeKm: 430,
+        seats: 4,
+        transmission: 'Automatic',
+        color: 'Yellow',
+        description: 'Sport coupe for short premium trips and special events.',
+        features: ['Sport mode', 'Premium audio', 'Rear camera', 'Low mileage'],
+      ),
+      Car(
+        id: 'car-13',
+        brand: 'Skoda',
+        model: 'Kodiaq',
+        year: 2022,
+        type: 'SUV',
+        category: 'Family',
+        pricePerHour: 11800,
+        status: CarStatus.available,
+        location: GeoPoint(lat: 43.2578, lng: 76.8849),
+        imageUrl:
+            'https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=1200&q=80',
+        batteryLevel: 79,
+        rangeKm: 650,
+        seats: 7,
+        transmission: 'Automatic',
+        color: 'Gray',
+        description:
+            'Seven-seat family SUV for city errands and weekend routes.',
+        features: ['7 seats', 'Large trunk', 'Child seat anchors', 'AWD'],
+      ),
+      Car(
+        id: 'car-14',
+        brand: 'Lexus',
+        model: 'RX',
+        year: 2023,
+        type: 'SUV',
+        category: 'Business',
+        pricePerHour: 26000,
+        status: CarStatus.inUse,
+        location: GeoPoint(lat: 43.2413, lng: 76.9348),
+        imageUrl:
+            'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1200&q=80',
+        batteryLevel: 83,
+        rangeKm: 580,
+        seats: 5,
+        transmission: 'Automatic',
+        color: 'Black',
+        description: 'Premium SUV with quiet ride and high comfort level.',
+        features: [
+          'Hybrid system',
+          'Ventilated seats',
+          'Premium audio',
+          '360 camera'
+        ],
+      ),
+      Car(
+        id: 'car-15',
+        brand: 'Toyota',
+        model: 'Camry',
+        year: 2023,
+        type: 'Sedan',
+        category: 'Comfort',
+        pricePerHour: 9800,
+        status: CarStatus.available,
+        location: GeoPoint(lat: 43.2319, lng: 76.8726),
+        imageUrl:
+            'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=1200&q=80',
+        batteryLevel: 77,
+        rangeKm: 620,
+        seats: 5,
+        transmission: 'Automatic',
+        color: 'White',
+        description: 'Reliable comfort sedan for everyday rentals.',
+        features: [
+          'Climate control',
+          'Rear camera',
+          'Adaptive cruise',
+          'USB-C'
+        ],
+      ),
+      Car(
+        id: 'car-16',
+        brand: 'Hyundai',
+        model: 'Staria',
+        year: 2023,
+        type: 'Van',
+        category: 'Family',
+        pricePerHour: 14000,
+        status: CarStatus.available,
+        location: GeoPoint(lat: 43.2681, lng: 76.9122),
+        imageUrl:
+            'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80',
+        batteryLevel: 72,
+        rangeKm: 560,
+        seats: 8,
+        transmission: 'Automatic',
+        color: 'Silver',
+        description:
+            'Spacious van for family trips, teams and airport transfers.',
+        features: [
+          '8 seats',
+          'Sliding doors',
+          'Large luggage area',
+          'Rear climate'
+        ],
+      ),
+      ..._datasetCars(),
     ];
+  }
+
+  static List<Car> _datasetCars() {
+    return [
+      _datasetCar('car-17', 'Mercedes-Benz', 'CL 550', 2008, 'Other', 35000,
+          135, 5.5, 'Petrol', 'rear', 4),
+      _datasetCar('car-18', 'Mercedes-Benz', 'B 180', 2012, 'Van', 17800, 162,
+          1.8, 'Diesel', 'front', 5),
+      _datasetCar('car-19', 'Mercedes-Benz', 'E-Class', 2010, 'Sedan', 22700,
+          125, 2.2, 'Diesel', 'rear', 5),
+      _datasetCar('car-20', 'Nissan', 'Qashqai', 2016, 'Crossover', 20447, 0,
+          1.2, 'Petrol', 'front', 5),
+      _datasetCar('car-21', 'BMW', '316', 1996, 'Sedan', 4700, 200, null,
+          'Petrol', 'rear', 5),
+      _datasetCar('car-22', 'BMW', '750', 2016, 'Sedan', 129222, 2, 5.0,
+          'Petrol', 'full', 5),
+      _datasetCar('car-23', 'Mercedes-Benz', 'GLE-Class', 2016, 'Crossover',
+          99999, 0, 3.0, 'Petrol', 'full', 5),
+      _datasetCar('car-24', 'BMW', 'M5', 2013, 'Sedan', 73900, 57, 4.4,
+          'Petrol', 'rear', 5),
+      _datasetCar('car-25', 'Land Rover', 'Range Rover', 2016, 'Crossover',
+          69000, 0, 4.4, 'Diesel', 'full', 5),
+      _datasetCar('car-26', 'Nissan', 'X-Trail', 2016, 'Crossover', 26034, 0,
+          1.6, 'Diesel', 'full', 5),
+      _datasetCar('car-27', 'BMW', 'X5', 2016, 'Crossover', 104999, 2, 3.0,
+          'Diesel', 'full', 5),
+      _datasetCar('car-28', 'BMW', 'X5', 2007, 'Crossover', 23900, 235, 3.0,
+          'Diesel', 'full', 5),
+      _datasetCar('car-29', 'Nissan', 'Leaf', 2013, 'Hatch', 13980, 31, null,
+          'Electric', 'front', 5),
+      _datasetCar('car-30', 'Nissan', 'Leaf', 2013, 'Hatch', 17300, 24, null,
+          'Electric', 'front', 5),
+      _datasetCar('car-31', 'Volkswagen', 'Passat B6', 2007, 'Sedan', 10700,
+          147, 2.0, 'Petrol', 'front', 5),
+      _datasetCar('car-32', 'Audi', 'A6', 1999, 'Vagon', 2600, 273, 2.5,
+          'Diesel', 'front', 5,
+          registered: false),
+      _datasetCar('car-33', 'Chrysler', 'Sebring', 2008, 'Sedan', 13700, 70,
+          2.4, 'Petrol', 'front', 5),
+      _datasetCar('car-34', 'Honda', 'Accord', 2003, 'Sedan', 6500, 199, 2.0,
+          'Petrol', 'front', 5),
+      _datasetCar('car-35', 'Mercedes-Benz', 'E-Class', 2013, 'Vagon', 33000,
+          91, null, 'Other', 'rear', 5),
+      _datasetCar('car-36', 'BMW', 'X5', 2015, 'Crossover', 63000, 0, 2.0,
+          'Diesel', 'full', 5),
+    ];
+  }
+
+  static Car _datasetCar(
+    String id,
+    String brand,
+    String model,
+    int year,
+    String body,
+    double price,
+    int mileageThousands,
+    double? engineVolume,
+    String fuelType,
+    String drive,
+    int seats, {
+    bool registered = true,
+  }) {
+    final isElectric = fuelType.toLowerCase() == 'electric';
+    final serial = int.parse(id.split('-').last);
+    return Car(
+      id: id,
+      brand: brand,
+      model: model,
+      year: year,
+      type: body,
+      category: isElectric
+          ? 'Electric'
+          : (body == 'Crossover' || body == 'Van' || body == 'Vagon'
+              ? 'Family'
+              : 'Business'),
+      pricePerHour: price,
+      status: CarStatus.available,
+      location: GeoPoint(
+        lat: 43.20 + (serial % 10) * 0.007,
+        lng: 76.86 + (serial % 9) * 0.009,
+      ),
+      imageUrl: '',
+      batteryLevel: isElectric ? 75 : 0,
+      rangeKm: isElectric ? 420 : 520,
+      seats: seats,
+      transmission: 'Automatic',
+      color: isElectric ? 'White' : 'Black',
+      description:
+          'Imported from car_ad.csv: $brand $model, $body, $fuelType, $drive drive.',
+      features: [
+        fuelType,
+        '${mileageThousands}k km mileage',
+        '$drive drive',
+        'Dataset import'
+      ],
+      fuelType: fuelType,
+      gasLevel: isElectric ? null : 78,
+      engineVolume: engineVolume,
+      mileageKm: mileageThousands * 1000,
+      drive: drive,
+      registered: registered,
+    );
   }
 
   static List<Booking> bookings() {

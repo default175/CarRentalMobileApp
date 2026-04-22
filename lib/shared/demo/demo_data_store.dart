@@ -15,7 +15,8 @@ class DemoDataStore {
         ),
         _cars = List<Car>.from(DemoSeedData.cars()),
         _bookings = List<Booking>.from(DemoSeedData.bookings()),
-        _notifications = List<AppNotification>.from(DemoSeedData.notifications()) {
+        _notifications =
+            List<AppNotification>.from(DemoSeedData.notifications()) {
     _notificationIds.addAll(_notifications.map((item) => item.id));
   }
 
@@ -140,7 +141,19 @@ class DemoDataStore {
       return;
     }
 
-    _bookings[index] = _bookings[index].copyWith(status: status);
+    final booking = _bookings[index].copyWith(status: status);
+    _bookings[index] = booking;
+    if (status == BookingStatus.cancelled) {
+      _addNotification(
+        AppNotification(
+          id: 'booking-cancelled-${booking.id}',
+          title: 'Booking cancelled',
+          message: '${booking.carName} booking was cancelled.',
+          type: AppNotificationType.booking,
+          createdAt: DateTime.now(),
+        ),
+      );
+    }
   }
 
   AppUser registerUser({
