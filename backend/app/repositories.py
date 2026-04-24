@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 
 from .db import mongo
@@ -31,6 +31,35 @@ def _upsert_memory(name: str, document: dict) -> dict:
       index = documents.index(current)
       documents[index] = document
     return document
+
+
+def list_documents(name: str, filters: dict | None = None, sort: list[tuple[str, int]] | None = None):
+    filters = filters or {}
+    collection = _collection(name)
+    if collection is not None:
+        cursor = collection.find(filters)
+        if sort:
+            cursor = cursor.sort(sort)
+        return list(cursor)
+
+    documents = list(_memory_documents(name))
+    for key, value in filters.items():
+        documents = [item for item in documents if item.get(key) == value]
+    if sort:
+        for field, direction in reversed(sort):
+            documents.sort(
+                key=lambda item: item.get(field),
+                reverse=direction < 0,
+            )
+    return documents
+
+
+def save_document(name: str, document: dict) -> dict:
+    collection = _collection(name)
+    if collection is not None:
+        collection.replace_one({"_id": document["_id"]}, document, upsert=True)
+        return document
+    return _upsert_memory(name, document)
 
 
 def list_cars():
@@ -153,21 +182,45 @@ def update_booking_status(booking_id: str, status: str) -> dict | None:
     collection = _collection("bookings")
     if collection is not None:
         collection.update_one({"_id": booking_id}, {"$set": {"status": status}})
-        return collection.find_one({"_id": booking_id})
+        booking = collection.find_one({"_id": booking_id})
+        if booking is not None and status == "cancelled":
+            create_notification(
+                build_booking_notification(
+                    booking_id=booking["_id"],
+                    title="Booking cancelled",
+                    message=f'{booking["car_name"]} booking was cancelled.',
+                )
+            )
+        return booking
 
     current = _find_memory("bookings", booking_id)
     if current is None:
         return None
     updated = {**current, "status": status}
+    if status == "cancelled":
+        create_notification(
+            build_booking_notification(
+                booking_id=updated["_id"],
+                title="Booking cancelled",
+                message=f'{updated["car_name"]} booking was cancelled.',
+            )
+        )
     return _upsert_memory("bookings", updated)
 
 
 def list_notifications():
     collection = _collection("notifications")
+    expires_at = datetime.now(timezone.utc) - timedelta(days=30)
+    if collection is not None:
+        collection.delete_many({"created_at": {"$lt": expires_at}})
     documents = (
         list(collection.find().sort("created_at", -1))
         if collection is not None
-        else list(_memory_documents("notifications"))
+        else [
+            item
+            for item in _memory_documents("notifications")
+            if item["created_at"] >= expires_at
+        ]
     )
     return [map_notification(item) for item in documents]
 
@@ -218,7 +271,27 @@ def get_tracking(car_id: str):
         )
 
     if document is None:
-        return None
+        car = get_car(car_id)
+        if car is None:
+            return None
+        location = car.get("location") or {"lat": 43.2389, "lng": 76.8897}
+        lat = float(location.get("lat", 43.2389))
+        lng = float(location.get("lng", 76.8897))
+        document = {
+            "_id": car_id,
+            "car_id": car_id,
+            "lat": lat,
+            "lng": lng,
+            "speed_kph": 36,
+            "is_inside_geofence": True,
+            "geofence_name": "Almaty fleet sector",
+            "distance_km": 0,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "route": [
+                {"lat": lat - 0.004, "lng": lng - 0.006},
+                {"lat": lat, "lng": lng},
+            ],
+        }
 
     return map_tracking(document)
 

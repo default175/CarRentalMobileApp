@@ -46,7 +46,7 @@ def demo_users() -> list[dict]:
 
 
 def demo_cars() -> list[dict]:
-    return [
+    cars = [
         {
             "_id": "car-1",
             "brand": "Tesla",
@@ -207,7 +207,251 @@ def demo_cars() -> list[dict]:
             "has_gps_signal": False,
             "location": {"lat": 43.2560, "lng": 76.8740},
         },
+        {
+            "_id": "car-9",
+            "brand": "BMW",
+            "model": "X5",
+            "year": 2022,
+            "type": "SUV",
+            "category": "Business",
+            "price_per_hour": 24000,
+            "status": "available",
+            "battery_level": 82,
+            "range_km": 590,
+            "seats": 5,
+            "transmission": "Automatic",
+            "color": "Dark Blue",
+            "description": "Executive SUV with premium cabin and active safety.",
+            "features": ["AWD", "Premium audio", "Panoramic roof", "Adaptive cruise"],
+            "image_url": "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80",
+            "has_gps_signal": True,
+            "location": {"lat": 43.2365, "lng": 76.9453},
+        },
+        {
+            "_id": "car-10",
+            "brand": "Audi",
+            "model": "A6",
+            "year": 2021,
+            "type": "Sedan",
+            "category": "Business",
+            "price_per_hour": 18500,
+            "status": "available",
+            "battery_level": 76,
+            "range_km": 610,
+            "seats": 5,
+            "transmission": "Automatic",
+            "color": "White",
+            "description": "Business sedan for meetings, airport transfers and daily routes.",
+            "features": ["Matrix lights", "Leather interior", "Quiet cabin", "Navigation"],
+            "image_url": "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1200&q=80",
+            "has_gps_signal": True,
+            "location": {"lat": 43.2451, "lng": 76.9004},
+        },
+        {
+            "_id": "car-11",
+            "brand": "Volkswagen",
+            "model": "ID.4",
+            "year": 2024,
+            "type": "Crossover",
+            "category": "Electric",
+            "price_per_hour": 12500,
+            "status": "available",
+            "battery_level": 91,
+            "range_km": 520,
+            "seats": 5,
+            "transmission": "Automatic",
+            "color": "Silver",
+            "description": "Electric crossover with practical cargo space and fast charging.",
+            "features": ["Fast charging", "Electric drive", "Large trunk", "Lane assist"],
+            "image_url": "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=1200&q=80",
+            "has_gps_signal": True,
+            "location": {"lat": 43.2298, "lng": 76.8921},
+        },
+        {
+            "_id": "car-12",
+            "brand": "Chevrolet",
+            "model": "Camaro",
+            "year": 2020,
+            "type": "Sport",
+            "category": "Comfort",
+            "price_per_hour": 22000,
+            "status": "booked",
+            "battery_level": 70,
+            "range_km": 430,
+            "seats": 4,
+            "transmission": "Automatic",
+            "color": "Yellow",
+            "description": "Sport coupe for short premium trips and special events.",
+            "features": ["Sport mode", "Premium audio", "Rear camera", "Low mileage"],
+            "image_url": "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=1200&q=80",
+            "has_gps_signal": True,
+            "location": {"lat": 43.2186, "lng": 76.9275},
+        },
+        {
+            "_id": "car-13",
+            "brand": "Skoda",
+            "model": "Kodiaq",
+            "year": 2022,
+            "type": "SUV",
+            "category": "Family",
+            "price_per_hour": 11800,
+            "status": "available",
+            "battery_level": 79,
+            "range_km": 650,
+            "seats": 7,
+            "transmission": "Automatic",
+            "color": "Gray",
+            "description": "Seven-seat family SUV for city errands and weekend routes.",
+            "features": ["7 seats", "Large trunk", "Child seat anchors", "AWD"],
+            "image_url": "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=1200&q=80",
+            "has_gps_signal": True,
+            "location": {"lat": 43.2578, "lng": 76.8849},
+        },
+        {
+            "_id": "car-14",
+            "brand": "Lexus",
+            "model": "RX",
+            "year": 2023,
+            "type": "SUV",
+            "category": "Business",
+            "price_per_hour": 26000,
+            "status": "inUse",
+            "battery_level": 83,
+            "range_km": 580,
+            "seats": 5,
+            "transmission": "Automatic",
+            "color": "Black",
+            "description": "Premium SUV with quiet ride and high comfort level.",
+            "features": ["Hybrid system", "Ventilated seats", "Premium audio", "360 camera"],
+            "image_url": "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1200&q=80",
+            "has_gps_signal": True,
+            "location": {"lat": 43.2413, "lng": 76.9348},
+        },
+        {
+            "_id": "car-15",
+            "brand": "Toyota",
+            "model": "Camry",
+            "year": 2023,
+            "type": "Sedan",
+            "category": "Comfort",
+            "price_per_hour": 9800,
+            "status": "available",
+            "battery_level": 77,
+            "range_km": 620,
+            "seats": 5,
+            "transmission": "Automatic",
+            "color": "White",
+            "description": "Reliable comfort sedan for everyday rentals.",
+            "features": ["Climate control", "Rear camera", "Adaptive cruise", "USB-C"],
+            "image_url": "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=1200&q=80",
+            "has_gps_signal": True,
+            "location": {"lat": 43.2319, "lng": 76.8726},
+        },
+        {
+            "_id": "car-16",
+            "brand": "Hyundai",
+            "model": "Staria",
+            "year": 2023,
+            "type": "Van",
+            "category": "Family",
+            "price_per_hour": 14000,
+            "status": "available",
+            "battery_level": 72,
+            "range_km": 560,
+            "seats": 8,
+            "transmission": "Automatic",
+            "color": "Silver",
+            "description": "Spacious van for family trips, teams and airport transfers.",
+            "features": ["8 seats", "Sliding doors", "Large luggage area", "Rear climate"],
+            "image_url": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80",
+            "has_gps_signal": True,
+            "location": {"lat": 43.2681, "lng": 76.9122},
+        },
     ]
+    cars.extend([
+        _dataset_car("car-17", "Mercedes-Benz", "CL 550", 2008, "other", 35000, 135, 5.5, "Petrol", "rear", 4),
+        _dataset_car("car-18", "Mercedes-Benz", "B 180", 2012, "van", 17800, 162, 1.8, "Diesel", "front", 5),
+        _dataset_car("car-19", "Mercedes-Benz", "E-Class", 2010, "sedan", 22700, 125, 2.2, "Diesel", "rear", 5),
+        _dataset_car("car-20", "Nissan", "Qashqai", 2016, "crossover", 20447, 0, 1.2, "Petrol", "front", 5),
+        _dataset_car("car-21", "BMW", "316", 1996, "sedan", 4700, 200, None, "Petrol", "rear", 5),
+        _dataset_car("car-22", "BMW", "750", 2016, "sedan", 129222, 2, 5.0, "Petrol", "full", 5),
+        _dataset_car("car-23", "Mercedes-Benz", "GLE-Class", 2016, "crossover", 99999, 0, 3.0, "Petrol", "full", 5),
+        _dataset_car("car-24", "BMW", "M5", 2013, "sedan", 73900, 57, 4.4, "Petrol", "rear", 5),
+        _dataset_car("car-25", "Land Rover", "Range Rover", 2016, "crossover", 69000, 0, 4.4, "Diesel", "full", 5),
+        _dataset_car("car-26", "Nissan", "X-Trail", 2016, "crossover", 26034, 0, 1.6, "Diesel", "full", 5),
+        _dataset_car("car-27", "BMW", "X5", 2016, "crossover", 104999, 2, 3.0, "Diesel", "full", 5),
+        _dataset_car("car-28", "BMW", "X5", 2007, "crossover", 23900, 235, 3.0, "Diesel", "full", 5),
+        _dataset_car("car-29", "Nissan", "Leaf", 2013, "hatch", 13980, 31, None, "Electric", "front", 5),
+        _dataset_car("car-30", "Nissan", "Leaf", 2013, "hatch", 17300, 24, None, "Electric", "front", 5),
+        _dataset_car("car-31", "Volkswagen", "Passat B6", 2007, "sedan", 10700, 147, 2.0, "Petrol", "front", 5),
+        _dataset_car("car-32", "Audi", "A6", 1999, "vagon", 2600, 273, 2.5, "Diesel", "front", 5, registered=False),
+        _dataset_car("car-33", "Chrysler", "Sebring", 2008, "sedan", 13700, 70, 2.4, "Petrol", "front", 5),
+        _dataset_car("car-34", "Honda", "Accord", 2003, "sedan", 6500, 199, 2.0, "Petrol", "front", 5),
+        _dataset_car("car-35", "Mercedes-Benz", "E-Class", 2013, "vagon", 33000, 91, None, "Other", "rear", 5),
+        _dataset_car("car-36", "BMW", "X5", 2015, "crossover", 63000, 0, 2.0, "Diesel", "full", 5),
+    ])
+    return [_with_car_defaults(item) for item in cars]
+
+
+def _dataset_car(
+    car_id: str,
+    brand: str,
+    model: str,
+    year: int,
+    body: str,
+    price: float,
+    mileage: int,
+    engine_volume: float | None,
+    fuel_type: str,
+    drive: str,
+    seats: int,
+    *,
+    registered: bool = True,
+) -> dict:
+    is_electric = fuel_type.lower() == "electric"
+    category = "Electric" if is_electric else ("Family" if body in {"crossover", "van", "vagon"} else "Business")
+    return {
+        "_id": car_id,
+        "brand": brand,
+        "model": model,
+        "year": year,
+        "type": body.title(),
+        "category": category,
+        "price_per_hour": price,
+        "status": "available",
+        "battery_level": 75 if is_electric else 0,
+        "range_km": 420 if is_electric else 520,
+        "seats": seats,
+        "transmission": "Automatic",
+        "color": "White" if is_electric else "Black",
+        "description": f"Imported from car_ad.csv: {brand} {model}, {body}, {fuel_type}, {drive} drive.",
+        "features": [fuel_type, f"{mileage}k km mileage", f"{drive} drive", "Dataset import"],
+        "fuel_type": fuel_type,
+        "gas_level": None if is_electric else 78,
+        "engine_volume": engine_volume,
+        "mileage_km": mileage * 1000,
+        "drive": drive,
+        "registered": registered,
+        "image_url": "",
+        "has_gps_signal": True,
+        "location": {"lat": 43.20 + (int(car_id.split("-")[1]) % 10) * 0.007, "lng": 76.86 + (int(car_id.split("-")[1]) % 9) * 0.009},
+    }
+
+
+def _with_car_defaults(item: dict) -> dict:
+    fuel_type = item.get("fuel_type") or (
+        "Electric" if item["brand"].lower() in {"tesla"} or item["model"].lower() in {"leaf", "id.4"} else "Petrol"
+    )
+    is_electric = fuel_type.lower() == "electric"
+    return {
+        **item,
+        "fuel_type": fuel_type,
+        "gas_level": None if is_electric else item.get("gas_level", 70 + (hash(item["_id"]) % 25)),
+        "engine_volume": item.get("engine_volume"),
+        "mileage_km": item.get("mileage_km", 0),
+        "drive": item.get("drive", "front"),
+        "registered": item.get("registered", True),
+    }
 
 
 def demo_bookings() -> list[dict]:
@@ -343,4 +587,96 @@ def demo_tracking() -> list[dict]:
             "updated_at": now.isoformat(),
             "route": [],
         },
+    ]
+
+
+def demo_wallets() -> list[dict]:
+    now = datetime.now(timezone.utc)
+    return [
+        {
+            "_id": "wallet-user-1",
+            "user_id": "user-1",
+            "balance": 120000,
+            "currency": "KZT",
+            "updated_at": now,
+        },
+        {
+            "_id": "wallet-admin-1",
+            "user_id": "admin-1",
+            "balance": 500000,
+            "currency": "KZT",
+            "updated_at": now,
+        },
+    ]
+
+
+def demo_transactions() -> list[dict]:
+    now = datetime.now(timezone.utc)
+    return [
+        {
+            "_id": "transaction-1",
+            "user_id": "user-1",
+            "booking_id": "booking-1",
+            "type": "wallet_top_up",
+            "amount": 50000,
+            "status": "paid",
+            "payment_method": "Visa **** 4242",
+            "created_at": now - timedelta(hours=3),
+        },
+        {
+            "_id": "transaction-2",
+            "user_id": "user-1",
+            "booking_id": "booking-2",
+            "type": "booking_payment",
+            "amount": -34000,
+            "status": "paid",
+            "payment_method": "Wallet",
+            "created_at": now - timedelta(days=3),
+        },
+    ]
+
+
+def demo_favorites() -> list[dict]:
+    now = datetime.now(timezone.utc)
+    return [
+        {"_id": "favorite-user-1-car-1", "user_id": "user-1", "car_id": "car-1", "created_at": now},
+        {"_id": "favorite-user-1-car-3", "user_id": "user-1", "car_id": "car-3", "created_at": now},
+    ]
+
+
+def demo_bookmarks() -> list[dict]:
+    now = datetime.now(timezone.utc)
+    return [
+        {"_id": "bookmark-user-1-car-5", "user_id": "user-1", "car_id": "car-5", "created_at": now},
+        {"_id": "bookmark-user-1-car-6", "user_id": "user-1", "car_id": "car-6", "created_at": now},
+    ]
+
+
+def demo_reviews() -> list[dict]:
+    now = datetime.now(timezone.utc)
+    return [
+        {
+            "_id": "review-1",
+            "user_id": "user-1",
+            "car_id": "car-1",
+            "booking_id": "booking-2",
+            "rating": 5,
+            "comment": "Clean car and fast pickup.",
+            "created_at": now - timedelta(days=2),
+        }
+    ]
+
+
+def demo_payment_methods() -> list[dict]:
+    now = datetime.now(timezone.utc)
+    return [
+        {
+            "_id": "payment-user-1-card-1",
+            "user_id": "user-1",
+            "type": "card",
+            "brand": "Visa",
+            "last4": "4242",
+            "is_default": True,
+            "created_at": now,
+        }
     ]
