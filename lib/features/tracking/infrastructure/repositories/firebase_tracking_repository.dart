@@ -49,7 +49,8 @@ class FirebaseTrackingRepository implements TrackingRepository {
               DateTime.now(),
         );
       }).handleError((_, __) => _fallbackSnapshot(carId));
-    })().asBroadcastStream();
+    })()
+        .asBroadcastStream();
   }
 
   TrackingSnapshot _fallbackSnapshot(String carId) {

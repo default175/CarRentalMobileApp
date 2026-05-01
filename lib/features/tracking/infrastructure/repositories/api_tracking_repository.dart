@@ -24,18 +24,16 @@ class ApiTrackingRepository implements TrackingRepository {
           lat: (raw['lat'] as num).toDouble(),
           lng: (raw['lng'] as num).toDouble(),
         ),
-        route: (raw['route'] as List<dynamic>? ?? const [])
-            .map(
-              (item) {
-                final point = Map<String, dynamic>.from(item as Map);
+        route: (raw['route'] as List<dynamic>? ?? const []).map(
+          (item) {
+            final point = Map<String, dynamic>.from(item as Map);
 
-                return GeoPoint(
-                lat: (point['lat'] as num).toDouble(),
-                lng: (point['lng'] as num).toDouble(),
-                );
-              },
-            )
-            .toList(growable: false),
+            return GeoPoint(
+              lat: (point['lat'] as num).toDouble(),
+              lng: (point['lng'] as num).toDouble(),
+            );
+          },
+        ).toList(growable: false),
         speedKph: (raw['speed_kph'] as num).toDouble(),
         isInsideGeofence: raw['is_inside_geofence'] as bool,
         geofenceName: raw['geofence_name'] as String,
