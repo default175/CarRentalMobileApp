@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/di/app_providers.dart';
-import '../../../shared/models/app_role.dart';
-import '../../admin/presentation/admin_page.dart';
-import '../../cars/presentation/cars_page.dart';
+import '../../extras/presentation/app_screen_catalog_page.dart';
 import '../../notifications/presentation/notifications_page.dart';
 import '../../profile/presentation/profile_page.dart';
 import 'overview_page.dart';
@@ -25,54 +24,137 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     final notifications = ref.watch(notificationsProvider);
     final unreadCount = ref.watch(unreadNotificationsCountProvider);
     final user = authController.currentUser!;
-    final isAdmin = user.role == AppRole.admin;
 
     final pages = <Widget>[
-      const OverviewPage(),
-      const CarsPage(),
+      OverviewPage(onProfileTap: () => setState(() => _currentIndex = 4)),
+      const AppTemplateScreenPage(slug: 'all-cars', embedded: true),
+      const AppTemplateScreenPage(slug: 'orders-history', embedded: true),
+      const AppTemplateScreenPage(slug: 'favorite-cars', embedded: true),
       const ProfilePage(),
-      if (isAdmin) const AdminPage(),
     ];
 
     final destinations = <NavigationDestination>[
       const NavigationDestination(
-        icon: Icon(Icons.dashboard_outlined),
-        label: 'Overview',
+        icon: Icon(Icons.home_outlined),
+        selectedIcon: Icon(Icons.home),
+        label: 'Home',
       ),
       const NavigationDestination(
         icon: Icon(Icons.directions_car_outlined),
-        label: 'Cars',
+        selectedIcon: Icon(Icons.directions_car),
+        label: 'All Cars',
+      ),
+      const NavigationDestination(
+        icon: Icon(Icons.calendar_month_outlined),
+        selectedIcon: Icon(Icons.calendar_month),
+        label: 'Bookings',
+      ),
+      const NavigationDestination(
+        icon: Icon(Icons.favorite_border),
+        selectedIcon: Icon(Icons.favorite),
+        label: 'Favorites',
       ),
       const NavigationDestination(
         icon: Icon(Icons.person_outline),
+        selectedIcon: Icon(Icons.person),
         label: 'Profile',
       ),
-      if (isAdmin)
-        const NavigationDestination(
-          icon: Icon(Icons.admin_panel_settings_outlined),
-          label: 'Admin',
-        ),
     ];
 
     return Scaffold(
+      extendBody: true,
+      drawer: Drawer(
+        child: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              Text('Menu', style: Theme.of(context).textTheme.headlineSmall),
+              const SizedBox(height: 16),
+              _DrawerItem(
+                icon: Icons.person_outline,
+                title: 'Profile',
+                onTap: () {
+                  Navigator.of(context).pop();
+                  setState(() => _currentIndex = 4);
+                },
+              ),
+              _DrawerItem(
+                icon: Icons.settings_outlined,
+                title: 'Settings',
+                onTap: () {
+                  Navigator.of(context).pop();
+                  context.push('/screens/settings-notifications');
+                },
+              ),
+              _DrawerItem(
+                icon: Icons.help_outline,
+                title: 'FAQ',
+                onTap: () {
+                  Navigator.of(context).pop();
+                  context.push('/screens/faqs');
+                },
+              ),
+              if (user.isAdmin)
+                _DrawerItem(
+                  icon: Icons.admin_panel_settings_outlined,
+                  title: 'Admin panel',
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    context.push('/screens/admin-panel');
+                  },
+                ),
+              _DrawerItem(
+                icon: Icons.privacy_tip_outlined,
+                title: 'Privacy Policy',
+                onTap: () {
+                  Navigator.of(context).pop();
+                  context.push('/screens/privacy-policy');
+                },
+              ),
+              _DrawerItem(
+                icon: Icons.description_outlined,
+                title: 'Terms Of Service',
+                onTap: () {
+                  Navigator.of(context).pop();
+                  context.push('/screens/terms-of-service');
+                },
+              ),
+              _DrawerItem(
+                icon: Icons.logout,
+                title: 'Sign out',
+                onTap: () {
+                  Navigator.of(context).pop();
+                  ref.read(authControllerProvider).signOut();
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       appBar: AppBar(
+        leading: Builder(
+          builder: (context) => IconButton(
+            tooltip: 'Menu',
+            onPressed: () => Scaffold.of(context).openDrawer(),
+            icon: const Icon(Icons.menu),
+          ),
+        ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Welcome, ${user.name}'),
+            Text(user.isAdmin ? 'Fleet Control' : 'Car Rental'),
             Text(
-              user.isAdmin ? 'Administrator workspace' : 'Rental workspace',
+              user.isAdmin
+                  ? 'Administrator workspace'
+                  : 'Find and book your ride',
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
         ),
         actions: [
           notifications.when(
-            data: (items) => IconButton(
+            data: (_) => IconButton(
               onPressed: () {
-                ref.read(viewedNotificationIdsProvider.notifier).state = items
-                    .map((item) => item.id)
-                    .toSet();
                 showModalBottomSheet<void>(
                   context: context,
                   isScrollControlled: true,
@@ -137,15 +219,56 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
       body: SafeArea(
         child: pages[_currentIndex],
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        destinations: destinations,
-        onDestinationSelected: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(14, 0, 14, 12),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.14),
+                blurRadius: 24,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: NavigationBar(
+              labelBehavior:
+                  NavigationDestinationLabelBehavior.onlyShowSelected,
+              selectedIndex: _currentIndex,
+              destinations: destinations,
+              onDestinationSelected: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          ),
+        ),
       ),
+    );
+  }
+}
+
+class _DrawerItem extends StatelessWidget {
+  const _DrawerItem({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: onTap,
+      leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
     );
   }
 }
